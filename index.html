@@ -1,78 +1,401 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AlgoLab — Belajar Algoritma & Pemrograman</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AlgoLab — Belajar Algoritma & Pemrograman</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div class="wrap">
-<header class="top"><div class="brand">◈ <span>Algo</span>Lab</div><div class="pill">BELAJAR • COBA • PAHAM</div></header>
-<section class="hero">
- <div><div class="pill">LABORATORIUM PEMROGRAMAN INTERAKTIF</div><h1>Jangan cuma hafal kode.<br><em>Pahami cara berpikirnya.</em></h1><p>Jelajahi algoritma dan pemrograman dari dasar, visualisasikan prosesnya, lalu uji ide kamu sendiri.</p><button onclick="showSection('dasar')">Mulai belajar ↗</button> <button class="secondary" onclick="showSection('sorting')">Lihat simulasi</button></div>
- <div class="hero-card"><div class="tiny">CONTOH ALGORITMA</div><div class="code-mini"><span class="kw">angka</span> = [<span class="num">4</span>, <span class="num">2</span>, <span class="num">7</span>]
+  <div class="wrap">
+    <header class="top">
+      <div class="brand">◈ <span>Algo</span>Lab</div>
+      <div class="pill">BELAJAR • COBA • PAHAM</div>
+    </header>
+
+    <section class="hero">
+      <div>
+        <div class="pill">LABORATORIUM PEMROGRAMAN INTERAKTIF</div>
+        <h1>Jangan cuma hafal kode.<br><em>Pahami cara berpikirnya.</em></h1>
+        <p>Jelajahi algoritma dan pemrograman dari dasar, visualisasikan prosesnya, lalu uji ide kamu sendiri.</p>
+        <button onclick="showSection('dasar')">Mulai belajar ↗</button>
+        <button class="secondary" onclick="showSection('sorting')">Lihat simulasi</button>
+      </div>
+
+      <div class="hero-card">
+        <div class="tiny">CONTOH ALGORITMA</div>
+        <div class="code-mini"><span class="kw">angka</span> = [<span class="num">4</span>, <span class="num">2</span>, <span class="num">7</span>]
 <span class="kw">for</span> x <span class="kw">in</span> angka:
     <span class="kw">if</span> x &gt; <span class="num">3</span>:
-        <span class="fn">print</span>(x)</div><hr style="border-color:var(--line)"><div class="tiny">HASIL PROGRAM</div><div class="code-mini" style="color:var(--accent)">4<br>7</div><p class="tiny">Kode adalah instruksi. Algoritma adalah urutan langkah yang menyelesaikan masalah.</p></div>
-</section>
-<div class="layout">
-<aside class="sidebar card"><h3>Jalur belajar</h3><div class="navlist">
-<button class="navbtn active" data-section="dasar" onclick="showSection('dasar')">01 · Dasar algoritma<small>Berpikir langkah demi langkah</small></button>
-<button class="navbtn" data-section="variabel" onclick="showSection('variabel')">02 · Variabel & tipe data<small>Menyimpan informasi</small></button>
-<button class="navbtn" data-section="if" onclick="showSection('if')">03 · Percabangan<small>Membuat keputusan</small></button>
-<button class="navbtn" data-section="loop" onclick="showSection('loop')">04 · Perulangan<small>Instruksi berulang</small></button>
-<button class="navbtn" data-section="fungsi" onclick="showSection('fungsi')">05 · Fungsi<small>Kode yang bisa dipakai ulang</small></button>
-<button class="navbtn" data-section="sorting" onclick="showSection('sorting')">06 · Visualisasi sorting<small>Bubble sort bergerak</small></button>
-<button class="navbtn" data-section="kompleksitas" onclick="showSection('kompleksitas')">07 · Kompleksitas<small>Efisiensi algoritma</small></button>
-<button class="navbtn" data-section="editor" onclick="showSection('editor')">08 · Playground Python<small>Tulis dan jalankan contoh</small></button>
-<button class="navbtn" data-section="kuis" onclick="showSection('kuis')">09 · Kuis mini<small>Cek pemahamanmu</small></button>
-</div><div class="progress"><div id="progressFill"></div></div><div class="tiny" id="progressText">0 dari 9 bagian dijelajahi</div></aside>
-<main class="content">
-<section class="section active" id="dasar"><h2>01. Berpikir algoritmik</h2><p class="lead">Sebelum menulis kode, tentukan dulu langkah untuk memecahkan masalah.</p>
-<div class="card"><span class="tag">KONSEP INTI</span><h3>Apa itu algoritma?</h3><p>Algoritma adalah urutan instruksi yang jelas dan terbatas untuk menyelesaikan suatu masalah. Resep memasak adalah analogi sederhana: ada bahan, langkah, dan hasil.</p><div class="grid3"><div><h3>① Input</h3><p class="muted">Data yang masuk, misalnya dua angka.</p></div><div><h3>② Proses</h3><p class="muted">Langkah yang mengolah input.</p></div><div><h3>③ Output</h3><p class="muted">Hasil yang dikeluarkan.</p></div></div></div>
-<div class="grid2"><div class="card"><h3>Contoh: jumlah dua angka</h3><pre>INPUT a, b
-hasil ← a + b
-OUTPUT hasil</pre><p class="tiny">Pseudocode adalah cara menuliskan logika dengan bahasa sederhana, tanpa terikat sintaks bahasa tertentu.</p></div><div class="card"><h3>Coba sendiri</h3><p>Ubah nilai input dan ikuti prosesnya.</p><div class="control"><label for="numA">Angka A</label><input id="numA" type="number" value="7"><label for="numB">Angka B</label><input id="numB" type="number" value="5"></div><button onclick="sumDemo()">Jalankan algoritma</button><div id="sumResult" class="callout">Output akan muncul di sini.</div></div></div>
-<div class="callout"><b>Ingat:</b> algoritma yang baik harus jelas, punya akhir, dan menghasilkan jawaban yang sesuai untuk input yang valid.</div></section>
+        <span class="fn">print</span>(x)</div>
+        <hr style="border-color:var(--line)">
+        <div class="tiny">HASIL PROGRAM</div>
+        <div class="code-mini" style="color:var(--accent)">4<br>7</div>
+        <p class="tiny">Kode adalah instruksi. Algoritma adalah urutan langkah yang menyelesaikan masalah.</p>
+      </div>
+    </section>
 
-<section class="section" id="variabel"><h2>02. Variabel & tipe data</h2><p class="lead">Variabel adalah nama untuk merujuk pada nilai yang digunakan program.</p><div class="grid2"><div class="card"><h3>Bayangkan kotak berlabel</h3><p><code>umur = 16</code> berarti nama <code>umur</code> merujuk ke nilai <code>16</code>. Dalam Python, tanda <code>=</code> melakukan assignment, bukan perbandingan.</p><pre>nama = "Rani"   # string
+    <div class="layout">
+      <aside class="sidebar card">
+        <h3>Jalur belajar</h3>
+        <div class="navlist">
+          <button class="navbtn active" data-section="dasar" onclick="showSection('dasar')">01 · Dasar algoritma<small>Berpikir langkah demi langkah</small></button>
+          <button class="navbtn" data-section="variabel" onclick="showSection('variabel')">02 · Variabel & tipe data<small>Menyimpan informasi</small></button>
+          <button class="navbtn" data-section="if" onclick="showSection('if')">03 · Percabangan<small>Membuat keputusan</small></button>
+          <button class="navbtn" data-section="loop" onclick="showSection('loop')">04 · Perulangan<small>Instruksi berulang</small></button>
+          <button class="navbtn" data-section="fungsi" onclick="showSection('fungsi')">05 · Fungsi<small>Kode yang bisa dipakai ulang</small></button>
+          <button class="navbtn" data-section="sorting" onclick="showSection('sorting')">06 · Visualisasi sorting<small>Bubble sort bergerak</small></button>
+          <button class="navbtn" data-section="kompleksitas" onclick="showSection('kompleksitas')">07 · Kompleksitas<small>Efisiensi algoritma</small></button>
+          <button class="navbtn" data-section="editor" onclick="showSection('editor')">08 · Playground Python<small>Tulis dan jalankan contoh</small></button>
+          <button class="navbtn" data-section="kuis" onclick="showSection('kuis')">09 · Kuis mini<small>Cek pemahamanmu</small></button>
+        </div>
+        <div class="progress">
+          <div id="progressFill"></div>
+        </div>
+        <div class="tiny" id="progressText">0 dari 9 bagian dijelajahi</div>
+      </aside>
+
+      <main class="content">
+        <!-- 01. Dasar -->
+        <section class="section active" id="dasar">
+          <h2>01. Berpikir algoritmik</h2>
+          <p class="lead">Sebelum menulis kode, tentukan dulu langkah untuk memecahkan masalah.</p>
+          
+          <div class="card">
+            <span class="tag">KONSEP INTI</span>
+            <h3>Apa itu algoritma?</h3>
+            <p>Algoritma adalah urutan instruksi yang jelas dan terbatas untuk menyelesaikan suatu masalah. Resep memasak adalah analogi sederhana: ada bahan, langkah, dan hasil.</p>
+            <div class="grid3">
+              <div>
+                <h3>① Input</h3>
+                <p class="muted">Data yang masuk, misalnya dua angka.</p>
+              </div>
+              <div>
+                <h3>② Proses</h3>
+                <p class="muted">Langkah yang mengolah input.</p>
+              </div>
+              <div>
+                <h3>③ Output</h3>
+                <p class="muted">Hasil yang dikeluarkan.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid2">
+            <div class="card">
+              <h3>Contoh: jumlah dua angka</h3>
+              <pre>INPUT a, b
+hasil ← a + b
+OUTPUT hasil</pre>
+              <p class="tiny">Pseudocode adalah cara menuliskan logika dengan bahasa sederhana, tanpa terikat sintaks bahasa tertentu.</p>
+            </div>
+            <div class="card">
+              <h3>Coba sendiri</h3>
+              <p>Ubah nilai input dan ikuti prosesnya.</p>
+              <div class="control">
+                <label for="numA">Angka A</label>
+                <input id="numA" type="number" value="7">
+                <label for="numB">Angka B</label>
+                <input id="numB" type="number" value="5">
+              </div>
+              <button onclick="sumDemo()">Jalankan algoritma</button>
+              <div id="sumResult" class="callout">Output akan muncul di sini.</div>
+            </div>
+          </div>
+          <div class="callout"><b>Ingat:</b> algoritma yang baik harus jelas, punya akhir, dan menghasilkan jawaban yang sesuai untuk input yang valid.</div>
+        </section>
+
+        <!-- 02. Variabel -->
+        <section class="section" id="variabel">
+          <h2>02. Variabel & tipe data</h2>
+          <p class="lead">Variabel adalah nama untuk merujuk pada nilai yang digunakan program.</p>
+          
+          <div class="grid2">
+            <div class="card">
+              <h3>Bayangkan kotak berlabel</h3>
+              <p><code>umur = 16</code> berarti nama <code>umur</code> merujuk ke nilai <code>16</code>. Dalam Python, tanda <code>=</code> melakukan assignment, bukan perbandingan.</p>
+              <pre>nama = "Rani"   # string
 umur = 16       # integer
 tinggi = 1.62   # float
-aktif = True    # boolean</pre></div><div class="card"><h3>Jelajahi tipe data</h3><div class="control"><label for="typeValue">Pilih nilai</label><select id="typeValue" onchange="typeDemo()"><option value="text">"Halo dunia"</option><option value="int">42</option><option value="float">3.14</option><option value="bool">True</option><option value="list">[2, 4, 6]</option></select></div><div id="typeResult" class="callout">Nilai: "Halo dunia"<br>Tipe: string (str)</div><p class="tiny">Tipe data membantu menentukan operasi yang masuk akal untuk sebuah nilai.</p></div></div><div class="card"><h3>Operator yang sering dipakai</h3><div class="grid2"><div><code>+ - * /</code><p class="muted">Aritmetika: tambah, kurang, kali, bagi.</p></div><div><code>== != &gt; &lt; &gt;= &lt;=</code><p class="muted">Perbandingan: hasilnya boolean, yaitu True atau False.</p></div><div><code>and / or / not</code><p class="muted">Operator logika untuk menggabungkan atau membalik kondisi.</p></div><div><code>%</code><p class="muted">Modulus: sisa pembagian. Contoh <code>7 % 2</code> menghasilkan 1.</p></div></div></div></section>
+aktif = True    # boolean</pre>
+            </div>
+            <div class="card">
+              <h3>Jelajahi tipe data</h3>
+              <div class="control">
+                <label for="typeValue">Pilih nilai</label>
+                <select id="typeValue" onchange="typeDemo()">
+                  <option value="text">"Halo dunia"</option>
+                  <option value="int">42</option>
+                  <option value="float">3.14</option>
+                  <option value="bool">True</option>
+                  <option value="list">[2, 4, 6]</option>
+                </select>
+              </div>
+              <div id="typeResult" class="callout">Nilai: "Halo dunia"<br>Tipe: string (str)</div>
+              <p class="tiny">Tipe data membantu menentukan operasi yang masuk akal untuk sebuah nilai.</p>
+            </div>
+          </div>
 
-<section class="section" id="if"><h2>03. Percabangan</h2><p class="lead">Program dapat memilih tindakan berdasarkan kondisi, seperti persimpangan jalan.</p><div class="card"><pre>nilai = 82
+          <div class="card">
+            <h3>Operator yang sering dipakai</h3>
+            <div class="grid2">
+              <div>
+                <code>+ - * /</code>
+                <p class="muted">Aritmetika: tambah, kurang, kali, bagi.</p>
+              </div>
+              <div>
+                <code>== != &gt; &lt; &gt;= &lt;=</code>
+                <p class="muted">Perbandingan: hasilnya boolean, yaitu True atau False.</p>
+              </div>
+              <div>
+                <code>and / or / not</code>
+                <p class="muted">Operator logika untuk menggabungkan atau membalik kondisi.</p>
+              </div>
+              <div>
+                <code>%</code>
+                <p class="muted">Modulus: sisa pembagian. Contoh <code>7 % 2</code> menghasilkan 1.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 03. Percabangan -->
+        <section class="section" id="if">
+          <h2>03. Percabangan</h2>
+          <p class="lead">Program dapat memilih tindakan berdasarkan kondisi, seperti persimpangan jalan.</p>
+          
+          <div class="card">
+            <pre>nilai = 82
 if nilai >= 75:
     print("Lulus")
 else:
-    print("Belajar lagi")</pre><p><b>Alurnya:</b> periksa kondisi. Jika benar, jalankan blok <code>if</code>; jika salah, jalankan blok <code>else</code>. Python menggunakan indentasi untuk menandai blok.</p></div><div class="card" style="margin-top:16px"><h3>Ubah nilai dan lihat keputusan</h3><div class="control"><label for="score">Nilai</label><input id="score" type="number" min="0" max="100" value="82"><button onclick="ifDemo()">Periksa</button></div><div id="ifResult" class="callout">Jika nilai minimal 75, hasilnya Lulus.</div><div class="steps"><span class="step">Mulai</span><span class="step">Cek nilai ≥ 75?</span><span class="step">Ya → Lulus</span><span class="step">Tidak → Belajar lagi</span></div></div><div class="callout">Gunakan <code>elif</code> jika ada beberapa kemungkinan, misalnya menentukan predikat A, B, C, atau D.</div></section>
+    print("Belajar lagi")</pre>
+            <p><b>Alurnya:</b> periksa kondisi. Jika benar, jalankan blok <code>if</code>; jika salah, jalankan blok <code>else</code>. Python menggunakan indentasi untuk menandai blok.</p>
+          </div>
 
-<section class="section" id="loop"><h2>04. Perulangan</h2><p class="lead">Loop menjalankan instruksi berulang kali tanpa perlu menulis kode yang sama berkali-kali.</p><div class="grid2"><div class="card"><span class="tag">FOR</span><h3>Ketika jumlah langkah diketahui</h3><pre>for i in range(1, 6):
-    print(i)</pre><p class="muted"><code>range(1, 6)</code> menghasilkan 1 sampai 5. Batas akhirnya tidak ikut dihitung.</p></div><div class="card"><span class="tag">WHILE</span><h3>Selama kondisi benar</h3><pre>energi = 3
+          <div class="card" style="margin-top:16px">
+            <h3>Ubah nilai dan lihat keputusan</h3>
+            <div class="control">
+              <label for="score">Nilai</label>
+              <input id="score" type="number" min="0" max="100" value="82">
+              <button onclick="ifDemo()">Periksa</button>
+            </div>
+            <div id="ifResult" class="callout">Jika nilai minimal 75, hasilnya Lulus.</div>
+            <div class="steps">
+              <span class="step">Mulai</span>
+              <span class="step">Cek nilai ≥ 75?</span>
+              <span class="step">Ya → Lulus</span>
+              <span class="step">Tidak → Belajar lagi</span>
+            </div>
+          </div>
+          <div class="callout">Gunakan <code>elif</code> jika ada beberapa kemungkinan, misalnya menentukan predikat A, B, C, atau D.</div>
+        </section>
+
+        <!-- 04. Perulangan -->
+        <section class="section" id="loop">
+          <h2>04. Perulangan</h2>
+          <p class="lead">Loop menjalankan instruksi berulang kali tanpa perlu menulis kode yang sama berkali-kali.</p>
+          
+          <div class="grid2">
+            <div class="card">
+              <span class="tag">FOR</span>
+              <h3>Ketika jumlah langkah diketahui</h3>
+              <pre>for i in range(1, 6):
+    print(i)</pre>
+              <p class="muted"><code>range(1, 6)</code> menghasilkan 1 sampai 5. Batas akhirnya tidak ikut dihitung.</p>
+            </div>
+            <div class="card">
+              <span class="tag">WHILE</span>
+              <h3>Selama kondisi benar</h3>
+              <pre>energi = 3
 while energi > 0:
     print(energi)
-    energi -= 1</pre><p class="muted">Kondisi harus akhirnya menjadi salah, atau loop bisa berjalan tanpa henti.</p></div></div><div class="card"><h3>Animasi hitung</h3><div class="control"><label for="loopCount">Hitung sampai</label><input id="loopCount" type="number" min="1" max="12" value="5"><button onclick="startLoop()">Mulai ulang simulasi</button><button class="secondary" onclick="nextLoop()">Langkah berikutnya</button></div><div id="loopVisual" class="steps"><span class="step">Tekan Mulai</span></div><div id="loopExplain" class="tiny">Amati nilai penghitung pada setiap iterasi.</div></div></section>
+    energi -= 1</pre>
+              <p class="muted">Kondisi harus akhirnya menjadi salah, atau loop bisa berjalan tanpa henti.</p>
+            </div>
+          </div>
 
-<section class="section" id="fungsi"><h2>05. Fungsi</h2><p class="lead">Fungsi membungkus langkah-langkah dengan nama, sehingga bisa dipakai ulang.</p><div class="card"><pre>def luas_persegi(panjang):
+          <div class="card">
+            <h3>Animasi hitung</h3>
+            <div class="control">
+              <label for="loopCount">Hitung sampai</label>
+              <input id="loopCount" type="number" min="1" max="12" value="5">
+              <button onclick="startLoop()">Mulai ulang simulasi</button>
+              <button class="secondary" onclick="nextLoop()">Langkah berikutnya</button>
+            </div>
+            <div id="loopVisual" class="steps">
+              <span class="step">Tekan Mulai</span>
+            </div>
+            <div id="loopExplain" class="tiny">Amati nilai penghitung pada setiap iterasi.</div>
+          </div>
+        </section>
+
+        <!-- 05. Fungsi -->
+        <section class="section" id="fungsi">
+          <h2>05. Fungsi</h2>
+          <p class="lead">Fungsi membungkus langkah-langkah dengan nama, sehingga bisa dipakai ulang.</p>
+          
+          <div class="card">
+            <pre>def luas_persegi(panjang):
     return panjang * panjang
 
 hasil = luas_persegi(4)
-print(hasil)  # 16</pre><p><code>panjang</code> adalah parameter. Angka <code>4</code> adalah argumen saat fungsi dipanggil. <code>return</code> mengirimkan hasil kembali ke pemanggil.</p></div><div class="card" style="margin-top:16px"><h3>Kalkulator luas persegi</h3><div class="control"><label for="side">Panjang sisi</label><input id="side" type="number" min="0" value="4"><button onclick="functionDemo()">Hitung luas</button></div><div id="functionResult" class="callout">Luas = sisi × sisi</div></div><div class="callout">Fungsi membuat program lebih terstruktur, mudah diuji, dan mengurangi pengulangan kode.</div></section>
+print(hasil)  # 16</pre>
+            <p><code>panjang</code> adalah parameter. Angka <code>4</code> adalah argumen saat fungsi dipanggil. <code>return</code> mengirimkan hasil kembali ke pemanggil.</p>
+          </div>
 
-<section class="section" id="sorting"><h2>06. Visualisasi Bubble Sort</h2><p class="lead">Bubble sort membandingkan pasangan angka yang bersebelahan, lalu menukarnya jika urutannya salah.</p><div class="card"><div class="control"><button onclick="resetSort()">Acak angka</button><button onclick="sortStep()">Langkah berikutnya →</button><button class="secondary" onclick="sortAll()">Selesaikan</button><label for="speed">Kecepatan</label><select id="speed"><option value="slow">Pelan</option><option value="fast">Cepat</option></select></div><div class="barstage" id="bars" aria-label="Visualisasi angka"></div><div class="steps" id="sortStatus"><span class="step">Siap mengurutkan</span></div><p class="tiny">Biru = belum berada di posisi akhir. Hijau = posisi sudah dipastikan. Coba amati berapa kali pasangan harus ditukar.</p></div><div class="grid2"><div class="card"><h3>Bagaimana cara kerjanya?</h3><ol><li>Bandingkan dua angka yang bersebelahan.</li><li>Jika angka kiri lebih besar, tukar posisinya.</li><li>Geser ke pasangan berikutnya.</li><li>Ulangi sampai tidak ada pertukaran yang diperlukan.</li></ol></div><div class="card"><h3>Efisiensi</h3><p>Bubble sort biasanya melakukan pekerjaan sebanding dengan \(n^2\) pada kasus rata-rata dan terburuk. Untuk daftar besar, algoritma seperti merge sort biasanya lebih efisien.</p><p class="tiny">Simulasi ini memakai daftar kecil agar setiap langkah terlihat.</p></div></div></section>
+          <div class="card" style="margin-top:16px">
+            <h3>Kalkulator luas persegi</h3>
+            <div class="control">
+              <label for="side">Panjang sisi</label>
+              <input id="side" type="number" min="0" value="4">
+              <button onclick="functionDemo()">Hitung luas</button>
+            </div>
+            <div id="functionResult" class="callout">Luas = sisi × sisi</div>
+          </div>
+          <div class="callout">Fungsi membuat program lebih terstruktur, mudah diuji, dan mengurangi pengulangan kode.</div>
+        </section>
 
-<section class="section" id="kompleksitas"><h2>07. Kompleksitas algoritma</h2><p class="lead">Bukan hanya “apakah berhasil?”, tetapi juga “seberapa banyak waktu dan memori yang dibutuhkan?”</p><div class="grid2"><div class="card"><span class="tag">O(1)</span><h3>Konstan</h3><p>Mengakses elemen array berdasarkan indeks biasanya membutuhkan jumlah langkah konstan.</p><pre>print(data[0])</pre></div><div class="card"><span class="tag">O(n)</span><h3>Linear</h3><p>Memeriksa setiap elemen satu kali. Jika data dua kali lebih banyak, pekerjaan tumbuh kira-kira dua kali.</p><pre>for x in data:
-    print(x)</pre></div><div class="card"><span class="tag">O(n²)</span><h3>Kuadratik</h3><p>Dua loop bersarang yang masing-masing melewati n elemen dapat menghasilkan sekitar n × n pekerjaan.</p><pre>for a in data:
+        <!-- 06. Sorting -->
+        <section class="section" id="sorting">
+          <h2>06. Visualisasi Bubble Sort</h2>
+          <p class="lead">Bubble sort membandingkan pasangan angka yang bersebelahan, lalu menukarnya jika urutannya salah.</p>
+          
+          <div class="card">
+            <div class="control">
+              <button onclick="resetSort()">Acak angka</button>
+              <button onclick="sortStep()">Langkah berikutnya →</button>
+              <button class="secondary" onclick="sortAll()">Selesaikan</button>
+              <label for="speed">Kecepatan</label>
+              <select id="speed">
+                <option value="slow">Pelan</option>
+                <option value="fast">Cepat</option>
+              </select>
+            </div>
+            <div class="barstage" id="bars" aria-label="Visualisasi angka"></div>
+            <div class="steps" id="sortStatus">
+              <span class="step">Siap mengurutkan</span>
+            </div>
+            <p class="tiny">Biru = belum berada di posisi akhir. Hijau = posisi sudah dipastikan. Coba amati berapa kali pasangan harus ditukar.</p>
+          </div>
+
+          <div class="grid2">
+            <div class="card">
+              <h3>Bagaimana cara kerjanya?</h3>
+              <ol>
+                <li>Bandingkan dua angka yang bersebelahan.</li>
+                <li>Jika angka kiri lebih besar, tukar posisinya.</li>
+                <li>Geser ke pasangan berikutnya.</li>
+                <li>Ulangi sampai tidak ada pertukaran yang diperlukan.</li>
+              </ol>
+            </div>
+            <div class="card">
+              <h3>Efisiensi</h3>
+              <p>Bubble sort biasanya melakukan pekerjaan sebanding dengan \(n^2\) pada kasus rata-rata dan terburuk. Untuk daftar besar, algoritma seperti merge sort biasanya lebih efisien.</p>
+              <p class="tiny">Simulasi ini memakai daftar kecil agar setiap langkah terlihat.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- 07. Kompleksitas -->
+        <section class="section" id="kompleksitas">
+          <h2>07. Kompleksitas algoritma</h2>
+          <p class="lead">Bukan hanya “apakah berhasil?”, tetapi juga “seberapa banyak waktu dan memori yang dibutuhkan?”</p>
+          
+          <div class="grid2">
+            <div class="card">
+              <span class="tag">O(1)</span>
+              <h3>Konstan</h3>
+              <p>Mengakses elemen array berdasarkan indeks biasanya membutuhkan jumlah langkah konstan.</p>
+              <pre>print(data[0])</pre>
+            </div>
+            <div class="card">
+              <span class="tag">O(n)</span>
+              <h3>Linear</h3>
+              <p>Memeriksa setiap elemen satu kali. Jika data dua kali lebih banyak, pekerjaan tumbuh kira-kira dua kali.</p>
+              <pre>for x in data:
+    print(x)</pre>
+            </div>
+            <div class="card">
+              <span class="tag">O(n²)</span>
+              <h3>Kuadratik</h3>
+              <p>Dua loop bersarang yang masing-masing melewati n elemen dapat menghasilkan sekitar n × n pekerjaan.</p>
+              <pre>for a in data:
     for b in data:
-        cek(a, b)</pre></div><div class="card"><span class="tag">O(log n)</span><h3>Logaritmik</h3><p>Pencarian biner membagi ruang pencarian menjadi dua pada setiap langkah, tetapi hanya berlaku jika data sudah terurut dan syaratnya terpenuhi.</p><pre>tengah = (kiri + kanan) // 2</pre></div></div><div class="card"><h3>Bandingkan pertumbuhan langkah</h3><div class="control"><label for="sizeN">Jumlah data n</label><input id="sizeN" type="number" min="1" max="1000" value="10" onchange="complexityDemo()"><button onclick="complexityDemo()">Hitung</button></div><div id="complexityResult" class="steps"></div><p class="tiny">Angka ini ilustrasi jumlah operasi, bukan pengukuran waktu nyata. Notasi Big O menggambarkan laju pertumbuhan saat ukuran input membesar, dengan mengabaikan konstanta dan suku yang lebih kecil.</p></div></section>
+        cek(a, b)</pre>
+            </div>
+            <div class="card">
+              <span class="tag">O(log n)</span>
+              <h3>Logaritmik</h3>
+              <p>Pencarian biner membagi ruang pencarian menjadi dua pada setiap langkah, tetapi hanya berlaku jika data sudah terurut dan syaratnya terpenuhi.</p>
+              <pre>tengah = (kiri + kanan) // 2</pre>
+            </div>
+          </div>
 
-<section class="section" id="editor"><h2>08. Playground Python</h2><p class="lead">Ubah contoh, lalu jalankan. Playground ini menjalankan beberapa pola Python dasar melalui simulator JavaScript, bukan interpreter Python penuh.</p><div class="card"><div class="control"><button class="secondary" onclick="loadExample('hello')">Contoh print</button><button class="secondary" onclick="loadExample('loop')">Contoh loop</button><button class="secondary" onclick="loadExample('if')">Contoh if</button></div><textarea id="editorCode" class="editor" spellcheck="false">nama = "Dunia"
-print("Halo,", nama)</textarea><div class="control"><button onclick="runCode()">▶ Jalankan kode</button><button class="secondary" onclick="document.getElementById('codeOutput').textContent=''">Bersihkan output</button></div><h3>Output</h3><pre class="output" id="codeOutput">Output program akan muncul di sini.</pre><p class="tiny">Simulator mendukung subset sederhana: assignment variabel, print(), operasi aritmetika dasar, for dengan range(), dan if/else dasar. Sintaks Python lain belum tentu didukung.</p></div></section>
+          <div class="card">
+            <h3>Bandingkan pertumbuhan langkah</h3>
+            <div class="control">
+              <label for="sizeN">Jumlah data n</label>
+              <input id="sizeN" type="number" min="1" max="1000" value="10" onchange="complexityDemo()">
+              <button onclick="complexityDemo()">Hitung</button>
+            </div>
+            <div id="complexityResult" class="steps"></div>
+            <p class="tiny">Angka ini ilustrasi jumlah operasi, bukan pengukuran waktu nyata. Notasi Big O menggambarkan laju pertumbuhan saat ukuran input membesar, dengan mengabaikan konstanta dan suku yang lebih kecil.</p>
+          </div>
+        </section>
 
-<section class="section" id="kuis"><h2>09. Kuis mini</h2><p class="lead">Uji konsep, bukan hafalan. Pilih jawaban terbaik untuk setiap pertanyaan.</p><div class="card"><div class="tiny" id="quizCount">Pertanyaan 1 dari 5</div><div class="progress"><div id="quizProgress"></div></div><h3 id="quizQuestion"></h3><div id="quizOptions"></div><div id="quizFeedback"></div><div class="control"><button id="quizSubmit" onclick="submitAnswer()">Periksa jawaban</button><button id="quizNext" class="secondary" onclick="nextQuestion()" style="display:none">Berikutnya →</button></div><div id="quizFinal"></div></div></section>
-</main></div>
-<footer class="footer">AlgoLab · Belajar algoritma satu langkah setiap kali.<br>Semua simulasi berjalan lokal di browser kamu.</footer>
-</div>
-<script src="script.js"></script>
+        <!-- 08. Playground -->
+        <section class="section" id="editor">
+          <h2>08. Playground Python</h2>
+          <p class="lead">Ubah contoh, lalu jalankan. Playground ini menjalankan beberapa pola Python dasar melalui simulator JavaScript, bukan interpreter Python penuh.</p>
+          
+          <div class="card">
+            <div class="control">
+              <button class="secondary" onclick="loadExample('hello')">Contoh print</button>
+              <button class="secondary" onclick="loadExample('loop')">Contoh loop</button>
+              <button class="secondary" onclick="loadExample('if')">Contoh if</button>
+            </div>
+            <textarea id="editorCode" class="editor" spellcheck="false">nama = "Dunia"
+print("Halo,", nama)</textarea>
+            <div class="control">
+              <button onclick="runCode()">▶ Jalankan kode</button>
+              <button class="secondary" onclick="document.getElementById('codeOutput').textContent=''">Bersihkan output</button>
+            </div>
+            <h3>Output</h3>
+            <pre class="output" id="codeOutput">Output program akan muncul di sini.</pre>
+            <p class="tiny">Simulator mendukung subset sederhana: assignment variabel, print(), operasi aritmetika dasar, for dengan range(), dan if/else dasar. Sintaks Python lain belum tentu didukung.</p>
+          </div>
+        </section>
+
+        <!-- 09. Kuis -->
+        <section class="section" id="kuis">
+          <h2>09. Kuis mini</h2>
+          <p class="lead">Uji konsep, bukan hafalan. Pilih jawaban terbaik untuk setiap pertanyaan.</p>
+          
+          <div class="card">
+            <div class="tiny" id="quizCount">Pertanyaan 1 dari 5</div>
+            <div class="progress">
+              <div id="quizProgress"></div>
+            </div>
+            <h3 id="quizQuestion"></h3>
+            <div id="quizOptions"></div>
+            <div id="quizFeedback"></div>
+            <div class="control">
+              <button id="quizSubmit" onclick="submitAnswer()">Periksa jawaban</button>
+              <button id="quizNext" class="secondary" onclick="nextQuestion()" style="display:none">Berikutnya →</button>
+            </div>
+            <div id="quizFinal"></div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <footer class="footer">
+      AlgoLab · Belajar algoritma satu langkah setiap kali.<br>
+      Semua simulasi berjalan lokal di browser kamu.
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>
