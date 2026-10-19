@@ -1,317 +1,441 @@
-:root {
-  --bg: #0b1020;
-  --panel: #121a2e;
-  --panel2: #18233c;
-  --text: #eef3ff;
-  --muted: #a7b4d0;
-  --line: #2b3957;
-  --accent: #71f0c2;
-  --blue: #86a9ff;
-  --pink: #ff8eb5;
-  --yellow: #ffd479;
+// App State Encapsulation
+const AppState = {
+  visitedSections: new Set(),
+  loop: { max: 5, i: 0 },
+  sort: { arr: [], i: 0, j: 0, swapped: false, ready: false, sortedSet: new Set() },
+  quiz: { index: 0, selected: -1, score: 0, answered: false }
+};
+
+const codeExamples = {
+  hello: 'nama = "Dunia"\nprint("Halo,", nama)',
+  loop: 'for i in range(1, 6):\n    print(i)',
+  if: 'nilai = 82\nif nilai >= 75:\n    print("Lulus")\nelse:\n    print("Belajar lagi")'
+};
+
+const quizQuestions = [
+  {
+    q: 'Apa tujuan utama algoritma?',
+    o: ['Membuat kode terlihat keren', 'Memberi langkah jelas untuk menyelesaikan masalah', 'Selalu memakai banyak variabel', 'Menghindari semua perulangan'],
+    a: 1,
+    e: 'Algoritma adalah urutan langkah jelas dan terbatas untuk memecahkan masalah.'
+  },
+  {
+    q: 'Apa hasil dari 7 % 2 dalam Python?',
+    o: ['3', '2', '1', '0'],
+    a: 2,
+    e: 'Operator % menghasilkan sisa pembagian. Sisa 7 dibagi 2 adalah 1.'
+  },
+  {
+    q: 'Kapan blok else dijalankan?',
+    o: ['Selalu sebelum if', 'Ketika kondisi if bernilai False dan alurnya mencapai else', 'Hanya saat program error', 'Setiap loop berakhir'],
+    a: 1,
+    e: 'else adalah jalur alternatif saat kondisi if tidak terpenuhi.'
+  },
+  {
+    q: 'Apa kegunaan fungsi?',
+    o: ['Menghapus kebutuhan logika', 'Membuat kode dapat dikelompokkan dan digunakan kembali', 'Mengubah semua angka menjadi teks', 'Menjalankan program tanpa input'],
+    a: 1,
+    e: 'Fungsi memberi nama pada suatu pekerjaan dan dapat dipanggil berulang.'
+  },
+  {
+    q: 'Kompleksitas O(n) biasanya berarti...',
+    o: ['Jumlah langkah tumbuh sebanding dengan ukuran input', 'Selalu satu langkah', 'Jumlah langkah tumbuh seperti n kuadrat', 'Algoritma tidak pernah selesai'],
+    a: 0,
+    e: 'O(n) disebut linear: pertumbuhan pekerjaan sebanding dengan jumlah data.'
+  }
+];
+
+// Navigation
+function showSection(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.toggle('active', s.id === id));
+  document.querySelectorAll('.navbtn').forEach(b => b.classList.toggle('active', b.dataset.section === id));
+  
+  AppState.visitedSections.add(id);
+  document.getElementById('progressFill').style.width = (AppState.visitedSections.size / 9 * 100) + '%';
+  document.getElementById('progressText').textContent = AppState.visitedSections.size + ' dari 9 bagian dijelajahi';
+  
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  if (id === 'kompleksitas') complexityDemo();
+  if (id === 'sorting' && !AppState.sort.ready) resetSort();
 }
-* { box-sizing: border-box; }
-body {
-  margin: 0;
-  background: radial-gradient(circle at 80% 0%, #1b2b4b 0, transparent 32%), var(--bg);
-  color: var(--text);
-  font: 16px/1.6 Inter, system-ui, Segoe UI, sans-serif;
+
+// Section Demos
+function sumDemo() {
+  const a = Number(document.getElementById('numA').value);
+  const b = Number(document.getElementById('numB').value);
+  document.getElementById('sumResult').innerHTML = `Input: ${a} dan ${b}<br>Proses: ${a} + ${b}<br><b>Output: ${a + b}</b>`;
 }
-button, input, select, textarea { font: inherit; }
-button {
-  cursor: pointer;
-  border: 0;
-  border-radius: 12px;
-  padding: 10px 15px;
-  background: var(--accent);
-  color: #092016;
-  font-weight: 750;
+
+function typeDemo() {
+  const val = document.getElementById('typeValue').value;
+  const types = {
+    text: ['"Halo dunia"', 'string (str)', 'Teks diapit tanda kutip.'],
+    int: ['42', 'integer (int)', 'Bilangan bulat.'],
+    float: ['3.14', 'float', 'Bilangan dengan pecahan desimal.'],
+    bool: ['True', 'boolean (bool)', 'Nilai logika True atau False.'],
+    list: ['[2, 4, 6]', 'list', 'Kumpulan nilai berurutan yang dapat diubah.']
+  };
+  const info = types[val];
+  document.getElementById('typeResult').innerHTML = `Nilai: <b>${info[0]}</b><br>Tipe: <b>${info[1]}</b><br>${info[2]}`;
 }
-button.secondary {
-  background: #253451;
-  color: var(--text);
-  border: 1px solid var(--line);
+
+function ifDemo() {
+  const n = Number(document.getElementById('score').value);
+  const r = document.getElementById('ifResult');
+  if (!Number.isFinite(n) || n < 0 || n > 100) {
+    r.textContent = 'Masukkan nilai dari 0 sampai 100.';
+    return;
+  }
+  r.innerHTML = `Kondisi: ${n} >= 75 → <b>${n >= 75 ? 'True' : 'False'}</b><br>Output: <b>${n >= 75 ? 'Lulus' : 'Belajar lagi'}</b>`;
 }
-button:hover { filter: brightness(1.08); }
-a { color: var(--accent); }
-.wrap {
-  max-width: 1200px;
-  margin: auto;
-  padding: 22px;
+
+function functionDemo() {
+  const n = Number(document.getElementById('side').value);
+  document.getElementById('functionResult').textContent = n < 0 
+    ? 'Panjang sisi tidak boleh negatif.' 
+    : `luas_persegi(${n}) = ${n} × ${n} = ${n * n}`;
 }
-.top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 14px;
-  flex-wrap: wrap;
-  border-bottom: 1px solid var(--line);
-  padding-bottom: 18px;
+
+// Loop Simulator
+function startLoop() {
+  AppState.loop.max = Math.max(1, Math.min(12, Number(document.getElementById('loopCount').value) || 5));
+  AppState.loop.i = 0;
+  document.getElementById('loopVisual').innerHTML = '';
+  nextLoop();
 }
-.brand {
-  font-size: 1.3rem;
-  font-weight: 900;
-  letter-spacing: -.04em;
+
+function nextLoop() {
+  const visual = document.getElementById('loopVisual');
+  const explain = document.getElementById('loopExplain');
+
+  if (AppState.loop.i === 0 && visual.children.length === 0) {
+    visual.innerHTML = '<span class="step current">Mulai</span>';
+    explain.textContent = 'Inisialisasi penghitung, lalu mulai iterasi.';
+    AppState.loop.i = 1;
+    return;
+  }
+
+  if (AppState.loop.i <= AppState.loop.max) {
+    const el = document.createElement('span');
+    el.className = 'step current';
+    el.textContent = 'i = ' + AppState.loop.i;
+    visual.appendChild(el);
+    explain.textContent = `Iterasi ${AppState.loop.i}: jalankan isi loop dengan i = ${AppState.loop.i}.`;
+    AppState.loop.i++;
+  } else {
+    explain.textContent = 'Selesai: kondisi perulangan tidak lagi terpenuhi.';
+    const e = document.createElement('span');
+    e.className = 'step';
+    e.textContent = 'Selesai';
+    visual.appendChild(e);
+  }
 }
-.brand span { color: var(--accent); }
-.pill {
-  color: var(--accent);
-  border: 1px solid #326c61;
-  border-radius: 99px;
-  padding: 5px 10px;
-  font-size: .8rem;
+
+// Sorting Visualizer
+function resetSort() {
+  AppState.sort.arr = Array.from({ length: 8 }, () => Math.floor(Math.random() * 80) + 10);
+  AppState.sort.i = 0;
+  AppState.sort.j = 0;
+  AppState.sort.swapped = false;
+  AppState.sort.sortedSet = new Set();
+  AppState.sort.ready = true;
+  renderBars();
+  document.getElementById('sortStatus').innerHTML = '<span class="step">Daftar baru dibuat</span>';
 }
-.hero {
-  padding: 42px 0 28px;
-  display: grid;
-  grid-template-columns: 1.4fr .8fr;
-  gap: 24px;
-  align-items: center;
+
+function renderBars(activeA = -1, activeB = -1) {
+  const host = document.getElementById('bars');
+  host.innerHTML = '';
+  const max = Math.max(...AppState.sort.arr);
+
+  AppState.sort.arr.forEach((v, idx) => {
+    const b = document.createElement('div');
+    b.className = 'bar' + (AppState.sort.sortedSet.has(idx) ? ' sorted' : '');
+    if (idx === activeA || idx === activeB) {
+      b.style.background = 'linear-gradient(0deg, #ff8eb5, #ffd0df)';
+    }
+    b.style.height = (v / max * 180) + 'px';
+    b.textContent = v;
+    b.title = 'Indeks ' + idx + ': ' + v;
+    host.appendChild(b);
+  });
 }
-.hero h1 {
-  font-size: clamp(2.1rem, 5vw, 4.2rem);
-  line-height: 1.05;
-  letter-spacing: -.055em;
-  margin: 12px 0;
+
+function sortStep() {
+  const s = AppState.sort;
+  if (!s.ready) resetSort();
+
+  if (s.i >= s.arr.length - 1) {
+    s.sortedSet = new Set(s.arr.map((_, i) => i));
+    renderBars();
+    document.getElementById('sortStatus').innerHTML = '<span class="step current">Selesai! Angka terurut.</span>';
+    return;
+  }
+
+  const a = s.j;
+  const b = s.j + 1;
+  if (s.arr[a] > s.arr[b]) {
+    [s.arr[a], s.arr[b]] = [s.arr[b], s.arr[a]];
+    s.swapped = true;
+  }
+
+  renderBars(a, b);
+  document.getElementById('sortStatus').innerHTML = `<span class="step">Lintasan ${s.i + 1}</span><span class="step">Bandingkan ${a} dan ${b}</span><span class="step">${s.arr[a] <= s.arr[b] ? 'Urutan benar' : 'Ditukar'}</span>`;
+
+  s.j++;
+  if (s.j >= s.arr.length - s.i - 1) {
+    s.sortedSet.add(s.arr.length - s.i - 1);
+    s.i++;
+    s.j = 0;
+    if (!s.swapped) {
+      s.sortedSet = new Set(s.arr.map((_, i) => i));
+      s.i = s.arr.length;
+    }
+    s.swapped = false;
+  }
 }
-.hero h1 em {
-  font-style: normal;
-  color: var(--accent);
+
+function sortAll() {
+  const s = AppState.sort;
+  let guard = 0;
+  while (s.i < s.arr.length - 1 && guard++ < 100) {
+    const a = s.j;
+    const b = s.j + 1;
+    if (s.arr[a] > s.arr[b]) {
+      [s.arr[a], s.arr[b]] = [s.arr[b], s.arr[a]];
+    }
+    s.j++;
+    if (s.j >= s.arr.length - s.i - 1) {
+      s.sortedSet.add(s.arr.length - s.i - 1);
+      s.i++;
+      s.j = 0;
+    }
+  }
+  s.sortedSet = new Set(s.arr.map((_, i) => i));
+  s.ready = true;
+  renderBars();
+  document.getElementById('sortStatus').innerHTML = '<span class="step current">Selesai! ' + s.arr.join(' · ') + '</span>';
 }
-.hero p, .muted { color: var(--muted); }
-.hero-card, .card {
-  background: linear-gradient(145deg, #16213a, #10182b);
-  border: 1px solid var(--line);
-  border-radius: 20px;
-  padding: 22px;
-  box-shadow: 0 18px 50px #0002;
+
+function complexityDemo() {
+  const n = Math.max(1, Math.min(1000, Number(document.getElementById('sizeN').value) || 1));
+  document.getElementById('complexityResult').innerHTML = `
+    <span class="step">O(1): 1</span>
+    <span class="step">O(log₂ n): ${Math.ceil(Math.log2(n + 1))}</span>
+    <span class="step">O(n): ${n.toLocaleString('id-ID')}</span>
+    <span class="step">O(n²): ${(n * n).toLocaleString('id-ID')}</span>
+  `;
 }
-.code-mini {
-  font: .9rem/1.8 ui-monospace, SFMono-Regular, Consolas, monospace;
-  color: #d7e3ff;
-  white-space: pre-wrap;
+
+// Code Interpreter / Playground
+function loadExample(key) {
+  document.getElementById('editorCode').value = codeExamples[key];
 }
-.kw { color: var(--pink); }
-.fn { color: var(--accent); }
-.num { color: var(--yellow); }
-.layout {
-  display: grid;
-  grid-template-columns: 250px 1fr;
-  gap: 22px;
-  align-items: start;
+
+function runCode() {
+  const code = document.getElementById('editorCode').value;
+  const lines = code.split(/\n/);
+  const vars = {};
+  const out = [];
+
+  function val(s) {
+    s = s.trim();
+    if (s in vars) return vars[s];
+    if ((s.startsWith('"') && s.endsWith('"')) || (s.startsWith("'") && s.endsWith("'"))) return s.slice(1, -1);
+    if (s === 'True') return true;
+    if (s === 'False') return false;
+    if (s === 'None') return null;
+    if (/^-?\d+(\.\d+)?$/.test(s)) return Number(s);
+
+    const m = s.match(/^(.+?)\s*([+\-*/%])\s*(.+)$/);
+    if (m) {
+      const a = val(m[1]);
+      const b = val(m[3]);
+      switch (m[2]) {
+        case '+': return (typeof a === 'string' || typeof b === 'string') ? String(a) + String(b) : a + b;
+        case '-': return a - b;
+        case '*': return a * b;
+        case '/': return a / b;
+        case '%': return a % b;
+      }
+    }
+    return s;
+  }
+
+  function condition(s) {
+    const m = s.match(/^(.+?)\s*(>=|<=|==|!=|>|<)\s*(.+)$/);
+    if (!m) throw Error('Kondisi belum didukung: ' + s);
+    const a = val(m[1]);
+    const b = val(m[3]);
+    return {
+      '>=': a >= b,
+      '<=': a <= b,
+      '==': a == b,
+      '!=': a != b,
+      '>': a > b,
+      '<': a < b
+    }[m[2]];
+  }
+
+  try {
+    function execRange(start, end) {
+      for (let j = start; j < end; j++) {
+        const raw = lines[j];
+        const line = raw.trim();
+        if (!line || line.startsWith('#')) continue;
+
+        let m;
+        if ((m = line.match(/^(\w+)\s*=\s*(.+)$/)) && !line.startsWith('if ')) {
+          vars[m[1]] = val(m[2]);
+          continue;
+        }
+
+        if ((m = line.match(/^print\((.*)\)$/))) {
+          const args = m[1].split(/,(?=(?:[^'"]|'[^']*'|"[^"]*")*$)/).map(x => String(val(x)));
+          out.push(args.join(' '));
+          continue;
+        }
+
+        if ((m = line.match(/^for\s+(\w+)\s+in\s+range\((\d+)(?:\s*,\s*(\d+))?\):$/))) {
+          let body = j + 1;
+          while (body < end && (!lines[body].trim() || lines[body].startsWith(' ') || lines[body].startsWith('\t'))) body++;
+          const from = m[3] === undefined ? 0 : Number(m[2]);
+          const to = m[3] === undefined ? Number(m[2]) : Number(m[3]);
+          if (body === j + 1) throw Error('Isi for harus memakai indentasi.');
+
+          for (let n = from; n < to; n++) {
+            vars[m[1]] = n;
+            execRange(j + 1, body);
+          }
+          j = body - 1;
+          continue;
+        }
+
+        if ((m = line.match(/^if\s+(.+):$/))) {
+          let mid = j + 1;
+          while (mid < end && (!lines[mid].trim() || lines[mid].startsWith(' ') || lines[mid].startsWith('\t'))) mid++;
+          const hasElse = mid < end && lines[mid].trim() === 'else:';
+          let finish = mid + 1;
+
+          if (hasElse) {
+            while (finish < end && (!lines[finish].trim() || lines[finish].startsWith(' ') || lines[finish].startsWith('\t'))) finish++;
+          }
+
+          if (mid === j + 1) throw Error('Isi if harus memakai indentasi.');
+          const yes = condition(m[1]);
+          if (yes) execRange(j + 1, mid);
+          else if (hasElse) execRange(mid + 1, finish);
+
+          j = (hasElse ? finish : mid) - 1;
+          continue;
+        }
+
+        if (line === 'else:') continue;
+        throw Error('Baris belum didukung: ' + line);
+      }
+    }
+
+    execRange(0, lines.length);
+    document.getElementById('codeOutput').textContent = out.join('\n') || '(Program selesai tanpa output)';
+  } catch (e) {
+    document.getElementById('codeOutput').textContent = 'Simulasi berhenti: ' + e.message;
+  }
 }
-.sidebar {
-  position: sticky;
-  top: 15px;
+
+// Quiz Component
+function renderQuiz() {
+  const q = quizQuestions[AppState.quiz.index];
+  document.getElementById('quizCount').textContent = `Pertanyaan ${AppState.quiz.index + 1} dari ${quizQuestions.length}`;
+  document.getElementById('quizProgress').style.width = (AppState.quiz.index / quizQuestions.length * 100) + '%';
+  document.getElementById('quizQuestion').textContent = q.q;
+
+  const optsHost = document.getElementById('quizOptions');
+  optsHost.innerHTML = '';
+
+  q.o.forEach((opt, idx) => {
+    const btn = document.createElement('button');
+    btn.className = 'quiz-option' + (AppState.quiz.selected === idx ? ' chosen' : '');
+    btn.textContent = String.fromCharCode(65 + idx) + '. ' + opt;
+    btn.onclick = () => {
+      if (!AppState.quiz.answered) {
+        AppState.quiz.selected = idx;
+        renderQuiz();
+      }
+    };
+    optsHost.appendChild(btn);
+  });
+
+  document.getElementById('quizFeedback').innerHTML = '';
+  document.getElementById('quizSubmit').style.display = AppState.quiz.answered ? 'none' : 'inline-block';
+  document.getElementById('quizNext').style.display = AppState.quiz.answered ? 'inline-block' : 'none';
+  document.getElementById('quizNext').textContent = AppState.quiz.index === quizQuestions.length - 1 ? 'Lihat hasil' : 'Berikutnya →';
 }
-.sidebar h3 {
-  font-size: .8rem;
-  text-transform: uppercase;
-  letter-spacing: .12em;
-  color: var(--muted);
+
+function submitAnswer() {
+  if (AppState.quiz.selected < 0) {
+    document.getElementById('quizFeedback').innerHTML = '<div class="feedback bad">Pilih satu jawaban dulu.</div>';
+    return;
+  }
+
+  AppState.quiz.answered = true;
+  const q = quizQuestions[AppState.quiz.index];
+  const correct = AppState.quiz.selected === q.a;
+  if (correct) AppState.quiz.score++;
+
+  document.getElementById('quizFeedback').innerHTML = `<div class="feedback ${correct ? 'good' : 'bad'}"><b>${correct ? 'Benar!' : 'Belum tepat.'}</b> ${q.e}</div>`;
+
+  document.querySelectorAll('.quiz-option').forEach((btn, idx) => {
+    btn.disabled = true;
+    if (idx === q.a) btn.style.borderColor = 'var(--accent)';
+  });
+
+  document.getElementById('quizSubmit').style.display = 'none';
+  document.getElementById('quizNext').style.display = 'inline-block';
+  document.getElementById('quizProgress').style.width = ((AppState.quiz.index + 1) / quizQuestions.length * 100) + '%';
 }
-.navbtn {
-  display: block;
-  width: 100%;
-  text-align: left;
-  background: transparent;
-  color: var(--muted);
-  border: 1px solid transparent;
-  margin: 3px 0;
-  padding: 10px 12px;
-  font-weight: 600;
+
+function nextQuestion() {
+  if (!AppState.quiz.answered) return;
+
+  if (AppState.quiz.index === quizQuestions.length - 1) {
+    const total = quizQuestions.length;
+    const score = AppState.quiz.score;
+    document.getElementById('quizQuestion').textContent = 'Kuis selesai!';
+    document.getElementById('quizOptions').innerHTML = '';
+    document.getElementById('quizFeedback').innerHTML = `
+      <div class="feedback good">
+        Skor kamu: <b>${score}/${total}</b> (${Math.round(score / total * 100)}%). 
+        ${score === total ? 'Sempurna!' : score >= 3 ? 'Bagus! Ulangi materi yang masih terasa sulit.' : 'Coba pelajari lagi konsepnya, lalu ulangi kuis.'}
+      </div>
+    `;
+
+    document.getElementById('quizSubmit').style.display = 'none';
+    const nextBtn = document.getElementById('quizNext');
+    nextBtn.textContent = 'Ulangi kuis';
+    nextBtn.onclick = () => {
+      AppState.quiz.index = 0;
+      AppState.quiz.score = 0;
+      AppState.quiz.selected = -1;
+      AppState.quiz.answered = false;
+      nextBtn.onclick = nextQuestion;
+      renderQuiz();
+    };
+    nextBtn.style.display = 'inline-block';
+    document.getElementById('quizCount').textContent = 'Selesai';
+    document.getElementById('quizProgress').style.width = '100%';
+    return;
+  }
+
+  AppState.quiz.index++;
+  AppState.quiz.selected = -1;
+  AppState.quiz.answered = false;
+  renderQuiz();
 }
-.navbtn.active, .navbtn:hover {
-  background: var(--panel2);
-  color: var(--text);
-  border-color: var(--line);
-}
-.navbtn small {
-  display: block;
-  font-size: .75rem;
-  color: var(--muted);
-  font-weight: 400;
-}
-.content { min-width: 0; }
-.section { display: none; }
-.section.active { display: block; }
-.section h2 {
-  font-size: 2rem;
-  letter-spacing: -.04em;
-  margin: 0 0 8px;
-}
-.lead {
-  color: var(--muted);
-  margin-top: 0;
-}
-.grid2 {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16px;
-  margin: 18px 0;
-}
-.grid3 {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 12px;
-  margin: 18px 0;
-}
-.card h3 { margin: 0 0 8px; }
-.tag {
-  display: inline-block;
-  font-size: .75rem;
-  color: var(--accent);
-  background: #18372f;
-  border-radius: 8px;
-  padding: 3px 8px;
-  margin-bottom: 8px;
-}
-code, pre, .mono { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; }
-pre {
-  background: #080e1b;
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  padding: 15px;
-  overflow: auto;
-  color: #dce7ff;
-}
-.callout {
-  border-left: 3px solid var(--accent);
-  background: #132b2a;
-  padding: 12px 15px;
-  border-radius: 0 10px 10px 0;
-  color: #d8fff1;
-  margin: 15px 0;
-}
-.control {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  flex-wrap: wrap;
-  margin: 12px 0;
-}
-.control input, .control select, .editor {
-  background: #080e1b;
-  color: var(--text);
-  border: 1px solid var(--line);
-  border-radius: 10px;
-  padding: 10px;
-  min-width: 0;
-}
-.control input { width: 100px; }
-.steps {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  margin: 16px 0;
-}
-.step {
-  padding: 9px 12px;
-  border-radius: 10px;
-  background: #202c47;
-  border: 1px solid var(--line);
-  font-family: monospace;
-}
-.step.current {
-  background: #174f43;
-  border-color: var(--accent);
-  color: #fff;
-}
-.barstage {
-  height: 230px;
-  display: flex;
-  align-items: end;
-  justify-content: center;
-  gap: 8px;
-  padding: 15px;
-  background: #080e1b;
-  border: 1px solid var(--line);
-  border-radius: 14px;
-  margin: 15px 0;
-}
-.bar {
-  flex: 1;
-  max-width: 60px;
-  min-width: 12px;
-  background: linear-gradient(0deg, #4a7bff, #82b1ff);
-  border-radius: 7px 7px 2px 2px;
-  display: flex;
-  align-items: start;
-  justify-content: center;
-  color: #061022;
-  font-weight: 800;
-  font-size: .8rem;
-  padding-top: 5px;
-  transition: height .35s, background .2s;
-}
-.bar.sorted { background: linear-gradient(0deg, #1eaa81, #71f0c2); }
-.editor {
-  width: 100%;
-  min-height: 190px;
-  resize: vertical;
-  font-size: .92rem;
-  line-height: 1.6;
-}
-.output {
-  white-space: pre-wrap;
-  min-height: 50px;
-}
-.quiz-option {
-  display: block;
-  width: 100%;
-  text-align: left;
-  background: #0b1325;
-  color: var(--text);
-  border: 1px solid var(--line);
-  margin: 8px 0;
-}
-.quiz-option.chosen {
-  border-color: var(--blue);
-  background: #1a2a4b;
-}
-.feedback {
-  padding: 12px;
-  border-radius: 10px;
-  margin-top: 12px;
-}
-.good {
-  background: #123a30;
-  color: #b8ffe6;
-}
-.bad {
-  background: #40212c;
-  color: #ffd1dd;
-}
-.progress {
-  height: 7px;
-  background: #27344d;
-  border-radius: 9px;
-  overflow: hidden;
-  margin: 12px 0;
-}
-.progress div {
-  height: 100%;
-  background: var(--accent);
-  width: 0;
-  transition: width .3s;
-}
-.footer {
-  text-align: center;
-  color: var(--muted);
-  padding: 35px 0 12px;
-  font-size: .85rem;
-}
-.tiny {
-  font-size: .85rem;
-  color: var(--muted);
-}
-@media(max-width: 800px) {
-  .hero { grid-template-columns: 1fr; padding-top: 28px; }
-  .layout { grid-template-columns: 1fr; }
-  .sidebar { position: static; }
-  .navlist { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px; }
-  .grid2, .grid3 { grid-template-columns: 1fr; }
-  .section h2 { font-size: 1.7rem; }
-  .wrap { padding: 14px; }
-  .hero-card { display: none; }
-}
+
+// Initializations
+renderQuiz();
+typeDemo();
+complexityDemo();
+resetSort();
+startLoop();
